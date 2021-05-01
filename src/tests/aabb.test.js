@@ -6,6 +6,7 @@ describe('getCollisionBox()', () => {
     expect(() => getCollisionBox(1)).toThrowError();
     expect(() => getCollisionBox(1, 3)).toThrowError();
     expect(() => getCollisionBox({x: 4, y: 4, width: 20, height: 20 })).toThrowError();
+    expect(() => getCollisionBox({x: 4, y: 4}, {x: 5, y: 5})).toThrowError();
   });
   
   test('should return true if box positions overlap', () => {
