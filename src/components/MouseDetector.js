@@ -1,21 +1,24 @@
-import React, { useState } from 'react'
+import React from "react";
+
+import useMousePosition from "../hooks/useMousePosition";
+
+import MouseDetectionContainer from "../styled-components/MouseDetectionContainer";
+import MouseDetectionSight from "../styled-components/MouseDetectionSight";
 
 export default function MouseDetector() {
-  // state for displaying mouse position
-  const [mousePos, setMousePos] = useState();
+  // ? Using a synthetic event here might not be sufficiently performant
+  const [mousePos, onMouseMove] = useMousePosition();
 
-  function handleMouseMove(event) {
-    // TODO: create interface for this, so I don't have to depend
-    // TODO: on the specifics of the onMouseMove event
-    setMousePos({x: event.clientX, y: event.clientY});
-  }
-
-  // function given mouse move event
   return (
-    <div onMouseMove={handleMouseMove} style={{height: "400px", width: "400px", background: "grey"}}>
+    <MouseDetectionContainer onMouseMove={onMouseMove}>
+      <MouseDetectionSight
+        pos={mousePos}
+        // sadly, styled-components makes new instance every time props passed change
+        style={{ top: mousePos?.y, left: mousePos?.x }}
+      />
       mousex: {mousePos?.x ?? "no mouse position!"}
-      <br/>
+      <br />
       mousey: {mousePos?.y ?? "no mouse position!"}
-    </div>
-  )
+    </MouseDetectionContainer>
+  );
 }
