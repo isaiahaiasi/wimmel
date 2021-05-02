@@ -12,16 +12,18 @@ export default function MouseDetector({ onClick, children }) {
       onMouseMove={onMouseMove}
       onClick={() => onClick(mousePos)}
     >
+      <div className="mouse-detection-container-hud">
+        mouse x: {mousePos?.x ?? "no mouse position!"}
+        <br />
+        mouse y: {mousePos?.y ?? "no mouse position!"}
+        {children}
+      </div>
       <MouseDetectionSight
         pos={mousePos}
         // sadly, styled-components makes new instance
         // every time props passed change
         style={{ top: mousePos?.y, left: mousePos?.x }}
       />
-      mouse x: {mousePos?.x ?? "no mouse position!"}
-      <br />
-      mouse y: {mousePos?.y ?? "no mouse position!"}
-      {children}
     </MouseDetectionContainer>
   );
 }

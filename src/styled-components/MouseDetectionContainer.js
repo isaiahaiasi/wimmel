@@ -6,8 +6,10 @@ const MouseDetectionContainer = styled.div`
   width: 100%;
   background: grey;
   position: relative;
-  * {
+
+  div {
     pointer-events: none;
+    user-select: none;
   }
 `;
 
