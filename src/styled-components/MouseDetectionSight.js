@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 const MouseDetectionSight = styled.div`
   position: absolute;
-  border-radius: 50%;
   border: 2px solid white;
   height: 50px;
   width: 50px;
