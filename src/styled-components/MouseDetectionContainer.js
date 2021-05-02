@@ -2,10 +2,10 @@ import styled from "styled-components";
 
 const MouseDetectionContainer = styled.div`
   box-sizing: border-box;
-  height: 800px;
   width: 100%;
   background: grey;
   position: relative;
+  overflow: hidden;
 
   div {
     pointer-events: none;
