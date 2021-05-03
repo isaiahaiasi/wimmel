@@ -6,6 +6,7 @@ import MouseDetector from "./MouseDetector";
 //! TEMP
 import img from "../local_assets/default-wimmel.jpg";
 import useRefSize from "../hooks/useRefSize";
+import useMousePosition from "../hooks/useMousePosition";
 
 //! PLACEHOLDER
 function getBoxes() {
@@ -57,6 +58,22 @@ function App() {
 
   // * MAKE BOX POSITIONS RELATIVE TO CONTAINER SIZE
   const [containerSize, containerRef] = useRefSize();
+  const [mousePos, setMousePos] = useMousePosition();
+
+  const getMousePosAsRatio = () => ({
+    x: mousePos?.x / containerSize.width,
+    y: mousePos?.y / containerSize.width,
+  });
+
+  function renderMousePos() {
+    return (
+      <div>
+        mouse x: {getMousePosAsRatio().x ?? "no mouse position!"}
+        <br />
+        mouse y: {getMousePosAsRatio().y ?? "no mouse position!"}
+      </div>
+    );
+  }
 
   return (
     <div className="App">
@@ -65,8 +82,13 @@ function App() {
       <div>
         container size: ({containerSize.width}x{containerSize.height})
       </div>
-
-      <MouseDetector onClick={handleClick} ref={containerRef}>
+      {renderMousePos()}
+      <MouseDetector
+        mousePos={mousePos}
+        setMousePos={setMousePos}
+        onClick={handleClick}
+        ref={containerRef}
+      >
         <img
           src={image}
           style={{ width: "100%" }}
@@ -85,11 +107,6 @@ function App() {
             }}
           />
         ))}
-        <ul>
-          {hits.map((hit, i) => (
-            <li key={i}>{hit.boxName}</li>
-          ))}
-        </ul>
       </MouseDetector>
     </div>
   );
