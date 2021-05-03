@@ -3,23 +3,32 @@ import useMousePosition from "../hooks/useMousePosition";
 import MouseDetectionContainer from "../styled-components/MouseDetectionContainer";
 import MouseDetectionSight from "../styled-components/MouseDetectionSight";
 
-export default function MouseDetector({ onClick, children }) {
+function MouseDetector({ onClick, children }, ref) {
   // ? Using a synthetic event here might not be sufficiently performant
-  const [mousePos, onMouseMove] = useMousePosition();
+  const [mousePos, setMousePos] = useMousePosition();
 
-  return (
-    <>
+  const handleMouseMove = setMousePos;
+
+  function renderMousePos() {
+    return (
       <div style={{ position: "absolute", color: "white" }}>
         mouse x: {mousePos?.x ?? "no mouse position!"}
         <br />
         mouse y: {mousePos?.y ?? "no mouse position!"}
       </div>
+    );
+  }
 
+  return (
+    <>
+      {renderMousePos()}
       <MouseDetectionContainer
-        onMouseMove={onMouseMove}
+        ref={ref}
+        onMouseMove={handleMouseMove}
         onClick={() => onClick(mousePos)}
       >
         <div className="mouse-detection-container-hud">{children}</div>
+
         <MouseDetectionSight
           pos={mousePos}
           // sadly, styled-components makes new instance
@@ -30,3 +39,5 @@ export default function MouseDetector({ onClick, children }) {
     </>
   );
 }
+
+export default React.forwardRef(MouseDetector);

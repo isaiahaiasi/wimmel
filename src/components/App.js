@@ -5,6 +5,7 @@ import MouseDetector from "./MouseDetector";
 
 //! TEMP
 import img from "../local_assets/default-wimmel.jpg";
+import useRefSize from "../hooks/useRefSize";
 
 //! PLACEHOLDER
 function getBoxes() {
@@ -20,7 +21,6 @@ function getBoxes() {
 // TODO: fetch image from cloud storage based on id
 // eslint-disable-next-line no-unused-vars
 function getImage(imageId) {
-  console.log(img);
   return img;
 }
 
@@ -50,21 +50,27 @@ function App() {
         !hits.some((hit) => hit.equals(target))
     );
 
-    if (!collided) {
-      return;
+    if (collided) {
+      setHits((prev) => [...prev, collided]);
     }
-
-    setHits((prev) => [...prev, collided]);
   };
+
+  // * MAKE BOX POSITIONS RELATIVE TO CONTAINER SIZE
+  const [containerSize, containerRef] = useRefSize();
 
   return (
     <div className="App">
       <div>Targets remaining: {targetBoxes.length - hits.length}</div>
-      <MouseDetector onClick={handleClick}>
+
+      <div>
+        container size: ({containerSize.width}x{containerSize.height})
+      </div>
+
+      <MouseDetector onClick={handleClick} ref={containerRef}>
         <img
-          src={image.src}
+          src={image}
           style={{ width: "100%" }}
-          alt="A wimmelbilder image, with characters to find"
+          alt="A wimmelbilder, with characters to find"
         />
         {targetBoxes.map((box, i) => (
           <div

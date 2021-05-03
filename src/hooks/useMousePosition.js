@@ -23,7 +23,6 @@ export default function useMousePosition() {
 
   function handleScroll() {
     setScrollPos({ x: window.scrollX, y: window.scrollY });
-    console.log(mousePos);
   }
 
   function handleMouseMove(event) {
