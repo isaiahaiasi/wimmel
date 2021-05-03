@@ -80,6 +80,27 @@ function App() {
     );
   }
 
+  function renderBoxes(boxes, style) {
+    return boxes.map((box, i) => {
+      const scaledBox = getScaledBox(box, containerSize.width);
+      return (
+        <div
+          key={i}
+          style={{
+            position: "absolute",
+            boxSizing: "border-box",
+            top: scaledBox.y,
+            left: scaledBox.x,
+            width: scaledBox.width,
+            height: scaledBox.height,
+            background: "rgba(255, 0, 0, .3)",
+            ...style,
+          }}
+        />
+      );
+    });
+  }
+
   return (
     <div className="App">
       <div>Targets remaining: {targetBoxes.length - hits.length}</div>
@@ -98,27 +119,12 @@ function App() {
           style={{ width: "100%" }}
           alt="A wimmelbilder, with characters to find"
         />
-        {targetBoxes.map((box, i) => {
-          const scaledBox = getScaledBox(box, containerSize.width);
-          return (
-            <div
-              key={i}
-              style={{
-                position: "absolute",
-                top: scaledBox.y,
-                left: scaledBox.x,
-                width: scaledBox.width,
-                height: scaledBox.height,
-                background: "red",
-                opacity: "70%",
-              }}
-            />
-          );
-        })}
+
+        {renderBoxes(targetBoxes)}
+        {renderBoxes(hits, { border: "3px solid white", background: "none" })}
+
         <MouseDetectionSight
           pos={mousePos}
-          // sadly, styled-components makes new instance
-          // every time props passed change
           style={{ top: mousePos?.y, left: mousePos?.x }}
         >
           {renderMousePos()}
