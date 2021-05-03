@@ -1,20 +1,21 @@
 import React, { useState } from "react";
 import { getBoxCollision } from "../logic/aabb";
-import hitBox from "../logic/hitbox";
+import hitBox, { getScaledBox } from "../logic/hitbox";
 import MouseDetector from "./MouseDetector";
 
 //! TEMP
 import img from "../local_assets/default-wimmel.jpg";
 import useRefSize from "../hooks/useRefSize";
 import useMousePosition from "../hooks/useMousePosition";
+import MouseDetectionSight from "../styled-components/MouseDetectionSight";
 
 //! PLACEHOLDER
 function getBoxes() {
   return [
-    hitBox(350, 100, 50, 100, "charles"),
-    hitBox(200, 230, 100, 50, "henrietta"),
-    hitBox(100, 300, 75, 75, "mcoffee"),
-    hitBox(150, 400, 50, 65, "harold"),
+    hitBox(0.508, 0.225, 0.025, 0.042, "yubaba"),
+    hitBox(0.2, 0.23, 0.03, 0.05, "TEMP_A"),
+    hitBox(0.1, 0.3, 0.075, 0.075, "TEMP_B"),
+    hitBox(0.15, 0.4, 0.05, 0.065, "TEMP_C"),
   ];
 }
 
@@ -37,14 +38,11 @@ function App() {
   const handleClick = ({ x, y }) => {
     const xOffset = x - SELECTOR_BOX_WIDTH / 2;
     const yOffset = y - SELECTOR_BOX_WIDTH / 2;
-    const selectorBox = hitBox(
-      xOffset,
-      yOffset,
-      SELECTOR_BOX_WIDTH,
-      SELECTOR_BOX_WIDTH
+    const selectorBox = getScaledBox(
+      hitBox(xOffset, yOffset, SELECTOR_BOX_WIDTH, SELECTOR_BOX_WIDTH),
+      1 / containerSize.width
     );
 
-    // TODO: add check for if box is already hit
     const collided = targetBoxes.find(
       (target) =>
         getBoxCollision(target, selectorBox) &&
@@ -60,17 +58,24 @@ function App() {
   const [containerSize, containerRef] = useRefSize();
   const [mousePos, setMousePos] = useMousePosition();
 
-  const getMousePosAsRatio = () => ({
-    x: mousePos?.x / containerSize.width,
-    y: mousePos?.y / containerSize.width,
+  const getPixelPosAsRatio = (pos) => ({
+    x: pos?.x / containerSize.width,
+    y: pos?.y / containerSize.width,
   });
 
   function renderMousePos() {
     return (
-      <div>
-        mouse x: {getMousePosAsRatio().x ?? "no mouse position!"}
+      <div
+        style={{
+          color: "white",
+          overflowWrap: "none",
+          paddingLeft: SELECTOR_BOX_WIDTH + 4,
+          textShadow: "5px 5px 12px black",
+        }}
+      >
+        x:{getPixelPosAsRatio(mousePos).x ?? "no mouse position!"}
         <br />
-        mouse y: {getMousePosAsRatio().y ?? "no mouse position!"}
+        y:{getPixelPosAsRatio(mousePos).y ?? "no mouse position!"}
       </div>
     );
   }
@@ -82,7 +87,6 @@ function App() {
       <div>
         container size: ({containerSize.width}x{containerSize.height})
       </div>
-      {renderMousePos()}
       <MouseDetector
         mousePos={mousePos}
         setMousePos={setMousePos}
@@ -94,19 +98,31 @@ function App() {
           style={{ width: "100%" }}
           alt="A wimmelbilder, with characters to find"
         />
-        {targetBoxes.map((box, i) => (
-          <div
-            key={i}
-            style={{
-              position: "absolute",
-              top: box.y,
-              left: box.x,
-              width: box.width,
-              height: box.height,
-              background: "green",
-            }}
-          />
-        ))}
+        {targetBoxes.map((box, i) => {
+          const scaledBox = getScaledBox(box, containerSize.width);
+          return (
+            <div
+              key={i}
+              style={{
+                position: "absolute",
+                top: scaledBox.y,
+                left: scaledBox.x,
+                width: scaledBox.width,
+                height: scaledBox.height,
+                background: "red",
+                opacity: "70%",
+              }}
+            />
+          );
+        })}
+        <MouseDetectionSight
+          pos={mousePos}
+          // sadly, styled-components makes new instance
+          // every time props passed change
+          style={{ top: mousePos?.y, left: mousePos?.x }}
+        >
+          {renderMousePos()}
+        </MouseDetectionSight>
       </MouseDetector>
     </div>
   );

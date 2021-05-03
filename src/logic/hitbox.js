@@ -16,4 +16,13 @@ const hitBox = (x, y, width, height, boxName) => {
   };
 };
 
+export const getScaledBox = (box, scale) => {
+  return {
+    x: box.x * scale,
+    y: box.y * scale,
+    width: box.width * scale,
+    height: box.height * scale,
+  };
+};
+
 export default hitBox;
