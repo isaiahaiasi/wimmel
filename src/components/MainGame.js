@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { getBoxCollision } from "../logic/aabb";
 import hitBox, { getScaledBox } from "../logic/hitbox";
 import MouseDetector from "./MouseDetector";
@@ -8,6 +8,7 @@ import img from "../local_assets/default-wimmel.jpg";
 import useRefSize from "../hooks/useRefSize";
 import useMousePosition from "../hooks/useMousePosition";
 import MouseDetectionSight from "../styled-components/MouseDetectionSight";
+import PageContext from "../PageContext";
 
 //! PLACEHOLDER
 function getBoxes() {
@@ -27,6 +28,8 @@ function getImage(imageId) {
 }
 
 function MainGame() {
+  const { handlePageChange, pages } = useContext(PageContext);
+
   const SELECTOR_BOX_WIDTH = 50;
 
   // TODO: fetch box data from storage, store as state
@@ -34,6 +37,10 @@ function MainGame() {
   const image = getImage();
 
   const [hits, setHits] = useState([]);
+
+  const endGame = () => {
+    handlePageChange(pages.gameOver);
+  };
 
   const handleClick = ({ x, y }) => {
     const xOffset = x - SELECTOR_BOX_WIDTH / 2;
@@ -50,7 +57,12 @@ function MainGame() {
     );
 
     if (collided) {
-      setHits((prev) => [...prev, collided]);
+      // if this would be the final box, go to game over page
+      if (hits.length === targetBoxes.length - 1) {
+        endGame();
+      } else {
+        setHits((prev) => [...prev, collided]);
+      }
     }
   };
 

@@ -3,16 +3,19 @@ import IntroPage from "./IntroPage";
 import MainGame from "./MainGame";
 import ErrorPage from "./ErrorPage";
 import PageContext, { pages } from "../PageContext";
+import GameOverPage from "./GameOverPage";
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState("intro");
 
   const getActivePage = () => {
     switch (currentPage) {
-      case "intro":
+      case pages.intro:
         return <IntroPage />;
-      case "maingame":
+      case pages.mainGame:
         return <MainGame />;
+      case pages.gameOver:
+        return <GameOverPage />;
       default:
         return <ErrorPage />;
     }
