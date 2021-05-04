@@ -6,10 +6,10 @@ import PageContext, { pages } from "../PageContext";
 import GameOverPage from "./GameOverPage";
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState("intro");
+  const [pageHistory, setPageHistory] = useState([pages.intro, pages.intro]);
 
   const getActivePage = () => {
-    switch (currentPage) {
+    switch (pageHistory[0]) {
       case pages.intro:
         return <IntroPage />;
       case pages.mainGame:
@@ -21,13 +21,15 @@ export default function App() {
     }
   };
 
-  // (might want to mediate this, so I'm creating a handler)
-  const handlePageChange = setCurrentPage;
+  // Store current page & last visited page
+  const handlePageChange = (newPage) => {
+    setPageHistory((previousHistory) => [newPage, previousHistory[0]]);
+  };
 
   return (
     <div>
       <header>Hello!</header>
-      <PageContext.Provider value={{ pages, currentPage, handlePageChange }}>
+      <PageContext.Provider value={{ pages, pageHistory, handlePageChange }}>
         {getActivePage()}
       </PageContext.Provider>
     </div>
