@@ -2,23 +2,23 @@ import React, { useContext, useState } from "react";
 import { getBoxCollision } from "../logic/aabb";
 import hitBox, { getScaledBox } from "../logic/hitbox";
 import MouseDetector from "./MouseDetector";
-
-//! TEMP
-import img from "../local_assets/default-wimmel.jpg";
 import useRefSize from "../hooks/useRefSize";
 import useMousePosition from "../hooks/useMousePosition";
 import MouseDetectionSight from "../styled-components/MouseDetectionSight";
 import PageContext from "../PageContext";
 
-//! PLACEHOLDER
-function getBoxes() {
-  return [
-    hitBox(0.508, 0.225, 0.025, 0.042, "yubaba"),
-    hitBox(0.2, 0.23, 0.03, 0.05, "TEMP_A"),
-    hitBox(0.1, 0.3, 0.075, 0.075, "TEMP_B"),
-    hitBox(0.15, 0.4, 0.05, 0.065, "TEMP_C"),
-  ];
-}
+//! TEMP
+import img from "../local_assets/default-wimmel.jpg";
+
+// //! PLACEHOLDER
+// function getBoxes() {
+//   return [
+//     hitBox(0.508, 0.225, 0.025, 0.042, "yubaba"),
+//     hitBox(0.2, 0.23, 0.03, 0.05, "TEMP_A"),
+//     hitBox(0.1, 0.3, 0.075, 0.075, "TEMP_B"),
+//     hitBox(0.15, 0.4, 0.05, 0.065, "TEMP_C"),
+//   ];
+// }
 
 //! PLACEHOLDER
 // TODO: fetch image from cloud storage based on id
@@ -27,14 +27,12 @@ function getImage(imageId) {
   return img;
 }
 
-function MainGame() {
-  const { handlePageChange, pages } = useContext(PageContext);
-
+function MainGame({ targetData }) {
   const SELECTOR_BOX_WIDTH = 50;
-
-  // TODO: fetch box data from storage, store as state
-  const targetBoxes = getBoxes();
   const image = getImage();
+  const [targetBoxes] = targetData;
+
+  const { handlePageChange, pages } = useContext(PageContext);
 
   const [hits, setHits] = useState([]);
 

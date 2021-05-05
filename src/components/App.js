@@ -4,16 +4,20 @@ import MainGame from "./MainGame";
 import ErrorPage from "./ErrorPage";
 import PageContext, { pages } from "../PageContext";
 import GameOverPage from "./GameOverPage";
+import { useCollection } from "../hooks/useFirestoreHooks";
 
 export default function App() {
   const [pageHistory, setPageHistory] = useState([pages.intro, pages.intro]);
+
+  // TODO: add custom firebase hook
+  const targetData = useCollection("targets");
 
   const getActivePage = () => {
     switch (pageHistory[0]) {
       case pages.intro:
         return <IntroPage />;
       case pages.mainGame:
-        return <MainGame />;
+        return <MainGame targetData={targetData} />;
       case pages.gameOver:
         return <GameOverPage />;
       default:
