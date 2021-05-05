@@ -30,7 +30,11 @@ function getImage(imageId) {
 function MainGame({ targetData }) {
   const SELECTOR_BOX_WIDTH = 50;
   const image = getImage();
-  const [targetBoxes] = targetData;
+  const [targetDataSnapshot] = targetData;
+  const targetBoxes = targetDataSnapshot?.docs.map((target) => {
+    const d = target.data();
+    return hitBox(d.x, d.y, d.width, d.height, d.targetName);
+  });
 
   const { handlePageChange, pages } = useContext(PageContext);
 
@@ -130,7 +134,7 @@ function MainGame({ targetData }) {
           alt="A wimmelbilder, with characters to find"
         />
 
-        {renderBoxes(targetBoxes)}
+        {targetBoxes && renderBoxes(targetBoxes)}
         {renderBoxes(hits, { border: "3px solid white", background: "none" })}
 
         <MouseDetectionSight
