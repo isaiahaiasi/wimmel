@@ -9,19 +9,11 @@ import PageContext from "../PageContext";
 
 //! TEMP
 import img from "../local_assets/default-wimmel.jpg";
-
-// //! PLACEHOLDER
-// function getBoxes() {
-//   return [
-//     hitBox(0.508, 0.225, 0.025, 0.042, "yubaba"),
-//     hitBox(0.2, 0.23, 0.03, 0.05, "TEMP_A"),
-//     hitBox(0.1, 0.3, 0.075, 0.075, "TEMP_B"),
-//     hitBox(0.15, 0.4, 0.05, 0.065, "TEMP_C"),
-//   ];
-// }
+import Stopwatch from "./Stopwatch";
 
 //! PLACEHOLDER
 // TODO: fetch image from cloud storage based on id
+// (haven't implemented yet b/c I haven't optimized image)
 // eslint-disable-next-line no-unused-vars
 function getImage(imageId) {
   return img;
@@ -118,7 +110,10 @@ function MainGame({ targetData }) {
   return (
     <div className="App">
       <div>Targets remaining: {targetBoxes.length - hits.length}</div>
-
+      <div>
+        <span>Time remaining:</span>
+        <Stopwatch />
+      </div>
       <div>
         container size: ({containerSize.width}x{containerSize.height})
       </div>
