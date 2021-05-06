@@ -16,7 +16,6 @@ export function useCollection(query) {
       setError("Could not retrieve data!");
     } else {
       setSnapshot(data);
-      console.log(data);
     }
 
     setIsLoading(false);
