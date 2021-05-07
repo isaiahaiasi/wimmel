@@ -31,7 +31,7 @@ export default function App() {
         return <MainGame targetData={targetData} />;
       }
       case pages.gameOver: {
-        // TODO: if I'm storing start time using function,s
+        // TODO: if I'm storing start time using cloud function
         // need to do the same with the endTime
         // (complicates how I'm passing time into GameOver component)
         const endTime = Date.now();
