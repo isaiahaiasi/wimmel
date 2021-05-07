@@ -4,7 +4,7 @@ import hitBox, { getScaledBox } from "../logic/hitbox";
 import MouseDetector from "./MouseDetector";
 import useRefSize from "../hooks/useRefSize";
 import useMousePosition from "../hooks/useMousePosition";
-import MouseDetectionSight from "../styled-components/MouseDetectionSight";
+import * as S from "../styled-components/main-game";
 import PageContext from "../PageContext";
 
 //! TEMP
@@ -132,12 +132,12 @@ function MainGame({ targetData }) {
         {targetBoxes && renderBoxes(targetBoxes)}
         {renderBoxes(hits, { border: "3px solid white", background: "none" })}
 
-        <MouseDetectionSight
+        <S.MouseDetectionSight
           pos={mousePos}
           style={{ top: mousePos?.y, left: mousePos?.x }}
         >
           {renderMousePos()}
-        </MouseDetectionSight>
+        </S.MouseDetectionSight>
       </MouseDetector>
     </div>
   );

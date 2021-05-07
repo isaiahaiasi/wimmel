@@ -15,7 +15,6 @@ export default function App() {
   const startTimer = () => {
     // TODO (?): trigger cloud function to save serverside timestamp?
     if (!startTime) {
-      console.log(Date.now());
       setStartTime(Date.now());
     }
   };
@@ -32,7 +31,7 @@ export default function App() {
         return <MainGame targetData={targetData} />;
       }
       case pages.gameOver: {
-        // TODO: if I'm storing start time using function,
+        // TODO: if I'm storing start time using function,s
         // need to do the same with the endTime
         // (complicates how I'm passing time into GameOver component)
         const endTime = Date.now();
