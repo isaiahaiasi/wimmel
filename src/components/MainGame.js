@@ -10,6 +10,7 @@ import PageContext from "../PageContext";
 //! TEMP
 import img from "../local_assets/default-wimmel.jpg";
 import Stopwatch from "./Stopwatch";
+import TargetSelector from "./TargetSelector";
 
 //! PLACEHOLDER
 // TODO: fetch image from cloud storage based on id
@@ -23,6 +24,7 @@ function MainGame({ targetData }) {
   const SELECTOR_BOX_WIDTH = 50;
   const image = getImage();
   const [targetDataSnapshot] = targetData;
+
   const targetBoxes = targetDataSnapshot?.docs.map((target) => {
     const d = target.data();
     return hitBox(d.x, d.y, d.width, d.height, d.targetName);
@@ -31,33 +33,39 @@ function MainGame({ targetData }) {
   const { handlePageChange, pages } = useContext(PageContext);
 
   const [hits, setHits] = useState([]);
+  const [showTargetBox, setShowTargetBox] = useState(false);
 
   const endGame = () => {
     handlePageChange(pages.gameOver);
   };
 
-  const handleClick = ({ x, y }) => {
-    const xOffset = x - SELECTOR_BOX_WIDTH / 2;
-    const yOffset = y - SELECTOR_BOX_WIDTH / 2;
+  const handleClick = () => {
+    setShowTargetBox(true);
+  };
+
+  const handleTargetSelect = (selectedTarget) => {
+    const xOffset = mousePos.x - SELECTOR_BOX_WIDTH / 2;
+    const yOffset = mousePos.y - SELECTOR_BOX_WIDTH / 2;
+
     const selectorBox = getScaledBox(
       hitBox(xOffset, yOffset, SELECTOR_BOX_WIDTH, SELECTOR_BOX_WIDTH),
       1 / containerSize.width
     );
 
-    const collided = targetBoxes.find(
-      (target) =>
-        getBoxCollision(target, selectorBox) &&
-        !hits.some((hit) => hit.equals(target))
-    );
+    const success =
+      getBoxCollision(selectorBox, selectedTarget) &&
+      !hits.some((hit) => hit.equals(selectedTarget));
 
-    if (collided) {
-      // if this would be the final box, go to game over page
+    if (success) {
       if (hits.length === targetBoxes.length - 1) {
         endGame();
       } else {
-        setHits((prev) => [...prev, collided]);
+        setHits((prev) => [...prev, selectedTarget]);
       }
     }
+
+    console.log("hello...");
+    setShowTargetBox(false);
   };
 
   // * MAKE BOX POSITIONS RELATIVE TO CONTAINER SIZE
@@ -109,19 +117,19 @@ function MainGame({ targetData }) {
 
   return (
     <div className="App">
-      <div>Targets remaining: {targetBoxes.length - hits.length}</div>
-      <S.StickyContainer>
+      <S.StickyContainer style={{ textAlign: "center", pointerEvents: "none" }}>
         <S.Window>
+          <div>Targets remaining: {targetBoxes.length - hits.length}</div>
           <div>Time remaining:</div>
-          <div style={{ textAlign: "center" }}>
+          <div>
             <Stopwatch />
           </div>
         </S.Window>
       </S.StickyContainer>
       <MouseDetector
         mousePos={mousePos}
-        setMousePos={setMousePos}
-        onClick={handleClick}
+        setMousePos={!showTargetBox ? setMousePos : () => {}}
+        onClick={!showTargetBox ? handleClick : () => {}}
         ref={containerRef}
       >
         <img
@@ -133,12 +141,20 @@ function MainGame({ targetData }) {
         {targetBoxes && renderBoxes(targetBoxes)}
         {renderBoxes(hits, { border: "3px solid white", background: "none" })}
 
-        <S.MouseDetectionSight
-          pos={mousePos}
-          style={{ top: mousePos?.y, left: mousePos?.x }}
-        >
-          {renderMousePos()}
-        </S.MouseDetectionSight>
+        {showTargetBox ? (
+          <TargetSelector
+            targets={targetBoxes}
+            position={mousePos}
+            onSelect={handleTargetSelect}
+          />
+        ) : (
+          <S.MouseDetectionSight
+            pos={mousePos}
+            style={{ top: mousePos?.y, left: mousePos?.x }}
+          >
+            {renderMousePos()}
+          </S.MouseDetectionSight>
+        )}
       </MouseDetector>
     </div>
   );
