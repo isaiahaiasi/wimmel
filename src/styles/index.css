@@ -8,10 +8,14 @@ body {
 
   background-color: rgb(27, 37, 53);
   color: white;
-  line-height: 1.8em;
+  line-height: 1.8;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+h2 {
+  margin: 0;
 }

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { colors as c } from "./_style-units";
 
 export const ContainerCentered = styled.div`
   box-sizing: border-box;
@@ -13,22 +14,35 @@ export const ContainerCentered = styled.div`
 `;
 
 export const Window = styled.div`
-  background: white;
-  color: black;
+  background: ${c.beige};
+  color: ${c.blue};
   box-sizing: border-box;
-  padding: 2rem;
+  padding: 1.5rem 2rem;
   border-radius: 1rem;
   box-shadow: 0.1rem 0.1rem 1rem rgb(9, 17, 31);
 `;
 
+export const StickyContainer = styled.div`
+  position: sticky;
+  top: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  z-index: 10;
+`;
+
 export const Button = styled.button`
   width: 100%;
-  color: black;
-  font-size: 1rem;
+  color: white;
+  text-shadow: 3px 3px 0 ${c.blue} inset;
+
+  font-weight: bold;
+  font-size: 1.25rem;
   line-height: 1.5rem;
-  background-color: lightblue;
+  background-color: ${c.red};
   border-radius: 0.5rem;
   border-style: none;
   padding: 0.5rem 1rem;
-  border-bottom: solid 2px slategrey;
+  border-bottom: solid 2px ${c.red};
 `;

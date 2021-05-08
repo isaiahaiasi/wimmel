@@ -14,5 +14,5 @@ export default function Stopwatch() {
     };
   }, []);
 
-  return <div>{displayTime(time)}</div>;
+  return <>{displayTime(time)}</>;
 }

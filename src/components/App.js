@@ -1,10 +1,13 @@
 import React, { useState } from "react";
+
+import { useCollection } from "../hooks/useFirestoreHooks";
+import PageContext, { pages } from "../PageContext";
+
 import IntroPage from "./IntroPage";
 import MainGame from "./MainGame";
 import ErrorPage from "./ErrorPage";
-import PageContext, { pages } from "../PageContext";
 import GameOverPage from "./GameOverPage";
-import { useCollection } from "../hooks/useFirestoreHooks";
+import Banner from "./Banner";
 
 export default function App() {
   const [pageHistory, setPageHistory] = useState([pages.intro, pages.intro]);
@@ -56,7 +59,7 @@ export default function App() {
 
   return (
     <div>
-      <header>Hello!</header>
+      <Banner />
       <PageContext.Provider value={{ pages, pageHistory, handlePageChange }}>
         {getActivePage()}
       </PageContext.Provider>

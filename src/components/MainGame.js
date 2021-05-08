@@ -110,13 +110,14 @@ function MainGame({ targetData }) {
   return (
     <div className="App">
       <div>Targets remaining: {targetBoxes.length - hits.length}</div>
-      <div>
-        <span>Time remaining:</span>
-        <Stopwatch />
-      </div>
-      <div>
-        container size: ({containerSize.width}x{containerSize.height})
-      </div>
+      <S.StickyContainer>
+        <S.Window>
+          <div>Time remaining:</div>
+          <div style={{ textAlign: "center" }}>
+            <Stopwatch />
+          </div>
+        </S.Window>
+      </S.StickyContainer>
       <MouseDetector
         mousePos={mousePos}
         setMousePos={setMousePos}
@@ -125,7 +126,7 @@ function MainGame({ targetData }) {
       >
         <img
           src={image}
-          style={{ width: "100%" }}
+          style={{ width: "100%", zIndex: -100 }}
           alt="A wimmelbilder, with characters to find"
         />
 
