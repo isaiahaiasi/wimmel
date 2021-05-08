@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import displayTime from "../logic/display-time";
 import PageContext from "../PageContext";
-import * as S from "../styled-components/styled-index";
+import * as S from "../styled-components/_styled-index";
 
 export default function GameOverPage({ time }) {
   const { handlePageChange, pages } = useContext(PageContext);

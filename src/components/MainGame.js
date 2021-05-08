@@ -4,7 +4,7 @@ import hitBox, { getScaledBox } from "../logic/hitbox";
 import MouseDetector from "./MouseDetector";
 import useRefSize from "../hooks/useRefSize";
 import useMousePosition from "../hooks/useMousePosition";
-import * as S from "../styled-components/main-game";
+import * as S from "../styled-components/_styled-index";
 import PageContext from "../PageContext";
 
 //! TEMP

@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import PageContext from "../PageContext";
-import * as S from "../styled-components/styled-index";
+import * as S from "../styled-components/_styled-index";
 
 export default function IntroPage() {
   const { handlePageChange, pages } = useContext(PageContext);

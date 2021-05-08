@@ -1,5 +1,5 @@
 import React from "react";
-import * as S from "../styled-components/main-game";
+import * as S from "../styled-components/_styled-index";
 
 function MouseDetector({ mousePos, setMousePos, onClick, children }, ref) {
   // ? Using a synthetic event here might not be sufficiently performant
