@@ -1,7 +1,6 @@
 import React from "react";
 
 export default function TargetSelector({ targets, position, onSelect }) {
-  console.log(targets);
   return (
     <div
       style={{

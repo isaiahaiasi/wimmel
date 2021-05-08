@@ -72,6 +72,7 @@ function MainGame({ targetData }) {
   const [containerSize, containerRef] = useRefSize();
   const [mousePos, setMousePos] = useMousePosition();
 
+  //! FOR DEBUGGING
   const getPixelPosAsRatio = (pos) => ({
     x: pos?.x / containerSize.width,
     y: pos?.y / containerSize.width,
@@ -87,6 +88,7 @@ function MainGame({ targetData }) {
           textShadow: "5px 5px 12px black",
         }}
       >
+        {/* ! FOR DEBUGGING */}
         x:{getPixelPosAsRatio(mousePos).x ?? "no mouse position!"}
         <br />
         y:{getPixelPosAsRatio(mousePos).y ?? "no mouse position!"}
@@ -129,7 +131,7 @@ function MainGame({ targetData }) {
       <MouseDetector
         mousePos={mousePos}
         setMousePos={!showTargetBox ? setMousePos : () => {}}
-        onClick={!showTargetBox ? handleClick : () => {}}
+        onClick={!showTargetBox ? handleClick : () => setShowTargetBox(false)}
         ref={containerRef}
       >
         <img

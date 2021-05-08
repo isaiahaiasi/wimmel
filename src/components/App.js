@@ -35,8 +35,7 @@ export default function App() {
       }
       case pages.gameOver: {
         // TODO: if I'm storing start time using cloud function
-        // need to do the same with the endTime
-        // (complicates how I'm passing time into GameOver component)
+        // need to do the same with the endTimes
         const endTime = Date.now();
         const finalTime = endTime - startTime;
         return <GameOverPage time={finalTime} />;

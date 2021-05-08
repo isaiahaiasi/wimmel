@@ -10,8 +10,6 @@ export default function GameOverPage({ time }) {
     <S.ContainerCentered>
       <S.Window>
         <h2>You won! Good job!</h2>
-        <div>Your time was {time}</div>
-        <div>Your time was {time / 1000}</div>
         <div>Your time was {displayTime(time)}</div>
         <S.Button onClick={() => handlePageChange(pages.intro)}>
           Play again?
