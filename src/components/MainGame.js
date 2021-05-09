@@ -3,7 +3,6 @@ import { getBoxCollision } from "../logic/aabb";
 import hitBox, { getScaledBox } from "../logic/hitbox";
 import MouseDetector from "./MouseDetector";
 import useRefSize from "../hooks/useRefSize";
-import useMousePosition from "../hooks/useMousePosition";
 import * as S from "../styled-components/_styled-index";
 import PageContext from "../PageContext";
 
@@ -11,18 +10,11 @@ import PageContext from "../PageContext";
 import img from "../local_assets/default-wimmel.jpg";
 import Stopwatch from "./Stopwatch";
 import TargetSelector from "./TargetSelector";
-
-//! PLACEHOLDER
-// TODO: fetch image from cloud storage based on id
-// (haven't implemented yet b/c I haven't optimized image)
-// eslint-disable-next-line no-unused-vars
-function getImage(imageId) {
-  return img;
-}
+import useMousePosition from "../hooks/useMousePosition";
 
 function MainGame({ targetData }) {
   const SELECTOR_BOX_WIDTH = 50;
-  const image = getImage();
+  const image = img;
   const [targetDataSnapshot] = targetData;
 
   const targetBoxes = targetDataSnapshot?.docs.map((target) => {
@@ -34,6 +26,18 @@ function MainGame({ targetData }) {
 
   const [hits, setHits] = useState([]);
   const [showTargetBox, setShowTargetBox] = useState(false);
+
+  const getRemainingTargets = () => {
+    return targetBoxes.filter((target) => {
+      return hits.every((hit) => !hit.equals(target));
+    });
+  };
+
+  const handleSetMousePos = (...args) => {
+    if (!showTargetBox) {
+      setMousePos(...args);
+    }
+  };
 
   const endGame = () => {
     handlePageChange(pages.gameOver);
@@ -64,7 +68,6 @@ function MainGame({ targetData }) {
       }
     }
 
-    console.log("hello...");
     setShowTargetBox(false);
   };
 
@@ -130,7 +133,7 @@ function MainGame({ targetData }) {
       </S.StickyContainer>
       <MouseDetector
         mousePos={mousePos}
-        setMousePos={!showTargetBox ? setMousePos : () => {}}
+        setMousePos={handleSetMousePos}
         onClick={!showTargetBox ? handleClick : () => setShowTargetBox(false)}
         ref={containerRef}
       >
@@ -145,7 +148,7 @@ function MainGame({ targetData }) {
 
         {showTargetBox ? (
           <TargetSelector
-            targets={targetBoxes}
+            targets={getRemainingTargets()}
             position={mousePos}
             onSelect={handleTargetSelect}
           />
