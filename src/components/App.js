@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { useCollection } from "../hooks/useFirestoreHooks";
+import { useGetTargets } from "../hooks/useFirestoreHooks";
 import PageContext, { pages } from "../PageContext";
 
 import IntroPage from "./IntroPage";
@@ -22,7 +22,7 @@ export default function App() {
     }
   };
 
-  const targetData = useCollection("targets");
+  const targetData = useGetTargets();
 
   const getActivePage = () => {
     switch (pageHistory[0]) {
@@ -34,6 +34,7 @@ export default function App() {
         return <MainGame targetData={targetData} />;
       }
       case pages.gameOver: {
+        console.log("uuurrrr");
         // TODO: if I'm storing start time using cloud function
         // need to do the same with the endTimes
         const endTime = Date.now();

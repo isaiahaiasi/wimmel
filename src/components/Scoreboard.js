@@ -1,10 +1,10 @@
 import React from "react";
-import { useCollection } from "../hooks/useFirestoreHooks";
+import { useGetHighscores } from "../hooks/useFirestoreHooks";
 import displayTime from "../logic/display-time";
 
 export default function Scoreboard() {
-  const [snapshot, isLoading, error] = useCollection("highscores");
-  const scores = snapshot?.docs.map((score) => ({
+  const [snapshot, error] = useGetHighscores();
+  const scores = snapshot?.docs?.map((score) => ({
     id: score.id,
     ...score.data(),
   }));
@@ -13,8 +13,7 @@ export default function Scoreboard() {
     <div>
       <h3>High scores:</h3>
       {error && <p>Oops! Error getting high score data!</p>}
-      {isLoading && <p>loading...</p>}
-      {snapshot && (
+      {scores ? (
         <table>
           <tbody>
             {scores.map((score, i) => (
@@ -25,6 +24,8 @@ export default function Scoreboard() {
             ))}
           </tbody>
         </table>
+      ) : (
+        <p>loading...</p>
       )}
     </div>
   );

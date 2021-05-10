@@ -1,16 +1,20 @@
 import React, { useContext, useState } from "react";
+
+import PageContext from "../PageContext";
+import useRefSize from "../hooks/useRefSize";
+import useMousePosition from "../hooks/useMousePosition";
+
+import MouseDetector from "./MouseDetector";
+import TargetSelector from "./TargetSelector";
+import Stopwatch from "./Stopwatch";
+
 import { getBoxCollision } from "../logic/aabb";
 import hitBox, { getScaledBox } from "../logic/hitbox";
-import MouseDetector from "./MouseDetector";
-import useRefSize from "../hooks/useRefSize";
+
 import * as S from "../styled-components/_styled-index";
-import PageContext from "../PageContext";
 
 //! TEMP
 import img from "../local_assets/default-wimmel.jpg";
-import Stopwatch from "./Stopwatch";
-import TargetSelector from "./TargetSelector";
-import useMousePosition from "../hooks/useMousePosition";
 
 function MainGame({ targetData }) {
   const SELECTOR_BOX_WIDTH = 50;
