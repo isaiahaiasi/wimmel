@@ -49,17 +49,24 @@ export function useGetHighscores() {
   return [highscores, error];
 }
 
-export function useAddDocument(query, data) {
-  const [addedDocument, setAddedDocument] = useState();
+export async function addHighscore(newScore) {
+  const db = firebase.firestore();
+  const { serverTimestamp } = firebase.firestore.FieldValue;
+  const highscores = await db.collection("highscores");
+  await highscores.add({ ...newScore, timestamp: serverTimestamp() });
 
-  useEffect(async () => {
-    const db = firebase.firestore();
-    const { serverTimestamp } = firebase.firestore.FieldValue;
-    const addedDocReference = await db
-      .collection(query)
-      .add({ ...data, timestamp: serverTimestamp() });
-    setAddedDocument(addedDocReference);
-  }, []);
+  // delete lowest score
+  const sortedScores = await highscores.orderBy("score", "desc").get();
 
-  return [addedDocument];
+  if (!sortedScores.empty && sortedScores.size > 5) {
+    const lowestScore = sortedScores.docs[0];
+    lowestScore.ref.delete();
+    console.log(
+      `${lowestScore.data().name}'s score of ${
+        lowestScore.data().score
+      } deleted!`
+    );
+  } else {
+    console.log("no lowest score to delete???");
+  }
 }

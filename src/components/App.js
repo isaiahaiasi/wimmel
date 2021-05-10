@@ -34,7 +34,6 @@ export default function App() {
         return <MainGame targetData={targetData} />;
       }
       case pages.gameOver: {
-        console.log("uuurrrr");
         // TODO: if I'm storing start time using cloud function
         // need to do the same with the endTimes
         const endTime = Date.now();
