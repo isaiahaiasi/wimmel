@@ -9,6 +9,25 @@ export default function IntroPage() {
     <S.ContainerCentered>
       <S.Window>
         <h2>Intro!</h2>
+        <p>Try to find these characters:</p>
+        <ul>
+          <li>
+            <span>Yubaba</span>
+            <img />
+          </li>
+          <li>
+            <span>Gwyndolin</span>
+            <img />
+          </li>
+          <li>
+            <span>Ryuk</span>
+            <img />
+          </li>
+          <li>
+            <span>Philip J. Fry</span>
+            <img />
+          </li>
+        </ul>
         <S.Button onClick={() => handlePageChange(pages.mainGame)}>
           On to the game...
         </S.Button>
