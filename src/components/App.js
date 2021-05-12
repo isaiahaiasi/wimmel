@@ -23,15 +23,17 @@ export default function App() {
   };
 
   const targetData = useGetTargets();
+  const [targetDataSnapshot] = targetData;
+  const targets = targetDataSnapshot?.docs.map((target) => target.data()) ?? [];
 
   const getActivePage = () => {
     switch (pageHistory[0]) {
       case pages.intro: {
-        return <IntroPage />;
+        return <IntroPage targets={targets} />;
       }
       case pages.mainGame: {
         startTimer();
-        return <MainGame targetData={targetData} />;
+        return <MainGame targets={targets} />;
       }
       case pages.gameOver: {
         // TODO: if I'm storing start time using cloud function

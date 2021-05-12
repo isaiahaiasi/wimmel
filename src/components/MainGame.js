@@ -16,15 +16,13 @@ import * as S from "../styled-components/_styled-index";
 //! TEMP
 import img from "../local_assets/default-wimmel.jpg";
 
-function MainGame({ targetData }) {
+function MainGame({ targets }) {
   const SELECTOR_BOX_WIDTH = 50;
   const image = img;
-  const [targetDataSnapshot] = targetData;
 
-  const targetBoxes = targetDataSnapshot?.docs.map((target) => {
-    const d = target.data();
-    return hitBox(d.x, d.y, d.width, d.height, d.targetName);
-  });
+  const targetBoxes = targets.map((t) =>
+    hitBox(t.x, t.y, t.width, t.height, t.targetName)
+  );
 
   const { handlePageChange, pages } = useContext(PageContext);
 
