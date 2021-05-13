@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { addHighscore, useGetHighscores } from "../hooks/useFirestoreHooks";
 import displayTime from "../logic/display-time";
 import PageContext from "../PageContext";
@@ -8,37 +8,44 @@ import Scoreboard from "./Scoreboard";
 export default function GameOverPage({ time }) {
   const { handlePageChange, pages } = useContext(PageContext);
 
-  const [showNameInput, setShowNameInput] = useState(false);
+  const [didAddHighscore, setDidAddHighscore] = useState(false);
   const [userName, setUserName] = useState("Charlie");
   const [scoresSnapshot] = useGetHighscores();
 
-  const scores = scoresSnapshot?.docs?.map((score) => ({
-    id: score.id,
-    ...score.data(),
-  }));
+  const scores = scoresSnapshot?.docs
+    ?.map((score) => ({
+      id: score.id,
+      ...score.data(),
+    }))
+    .sort((a, b) => a.score - b.score);
 
   const didMakeHighscore = (score) =>
-    scores && (scores[scores.length - 1].score > score || scores.length < 5);
+    scores && (scores[scores.length - 1]?.score > score || scores.length < 5);
 
-  useEffect(() => {
-    if (didMakeHighscore(time)) {
-      setShowNameInput(true);
-    }
-  }, [scores]);
+  // easier to lie about the database pull than to refresh when the real score is added
+  const getDynamicScore = () =>
+    didMakeHighscore(time)
+      ? [...scores, { name: userName, score: time }].sort(
+          (a, b) => a.score - b.score
+        )
+      : scores;
 
-  const handleAddScore = () => {
+  const showNameInput = () => didMakeHighscore(time) && !didAddHighscore;
+
+  const handleAddScore = (e) => {
+    e.preventDefault();
     const score = {
       score: time,
       name: userName,
     };
-    console.log("score added!");
-    // TODO: get player's name, add their score to scoreboard
+
     addHighscore(score);
+    setDidAddHighscore(true);
   };
 
   const getScoreMessage = (score) => {
     if (didMakeHighscore(score)) {
-      if (score > scores[0]) {
+      if (score <= scores[0].score) {
         return "Fantastic! You're number 1!!!";
       } else {
         return "High score! Great job!";
@@ -51,9 +58,21 @@ export default function GameOverPage({ time }) {
   return (
     <S.ContainerCentered>
       <S.Window>
-        <h2>{getScoreMessage()}</h2>
+        <h2>{getScoreMessage(time)}</h2>
         <div>Your time was {displayTime(time)}</div>
-        <Scoreboard scores={scores} />
+        {showNameInput() ? (
+          <form>
+            <input
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
+            />
+            <button type="submit" onClick={handleAddScore}>
+              Submit highscore!
+            </button>
+          </form>
+        ) : (
+          <Scoreboard scores={getDynamicScore()} />
+        )}
         <S.Button onClick={() => handlePageChange(pages.intro)}>
           Play again?
         </S.Button>
