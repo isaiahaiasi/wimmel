@@ -78,28 +78,28 @@ function MainGame({ targets }) {
   const [mousePos, setMousePos] = useMousePosition();
 
   //! FOR DEBUGGING
-  const getPixelPosAsRatio = (pos) => ({
-    x: pos?.x / containerSize.width,
-    y: pos?.y / containerSize.width,
-  });
+  // const getPixelPosAsRatio = (pos) => ({
+  //   x: pos?.x / containerSize.width,
+  //   y: pos?.y / containerSize.width,
+  // });
 
-  function renderMousePos() {
-    return (
-      <div
-        style={{
-          color: "white",
-          overflowWrap: "none",
-          paddingLeft: SELECTOR_BOX_WIDTH + 4,
-          textShadow: "5px 5px 12px black",
-        }}
-      >
-        {/* ! FOR DEBUGGING */}
-        x:{getPixelPosAsRatio(mousePos).x ?? "no mouse position!"}
-        <br />
-        y:{getPixelPosAsRatio(mousePos).y ?? "no mouse position!"}
-      </div>
-    );
-  }
+  // function renderMousePos() {
+  //   return (
+  //     <div
+  //       style={{
+  //         color: "white",
+  //         overflowWrap: "none",
+  //         paddingLeft: SELECTOR_BOX_WIDTH + 4,
+  //         textShadow: "5px 5px 12px black",
+  //       }}
+  //     >
+  //       {/* ! FOR DEBUGGING */}
+  //       x:{getPixelPosAsRatio(mousePos).x ?? "no mouse position!"}
+  //       <br />
+  //       y:{getPixelPosAsRatio(mousePos).y ?? "no mouse position!"}
+  //     </div>
+  //   );
+  // }
 
   function renderBoxes(boxes, style) {
     return boxes.map((box, i) => {
@@ -145,7 +145,6 @@ function MainGame({ targets }) {
           alt="A wimmelbilder, with characters to find"
         />
 
-        {targetBoxes && renderBoxes(targetBoxes)}
         {renderBoxes(hits, { border: "3px solid white", background: "none" })}
 
         {showTargetBox ? (
@@ -158,9 +157,7 @@ function MainGame({ targets }) {
           <S.MouseDetectionSight
             pos={mousePos}
             style={{ top: mousePos?.y, left: mousePos?.x }}
-          >
-            {renderMousePos()}
-          </S.MouseDetectionSight>
+          ></S.MouseDetectionSight>
         )}
       </MouseDetector>
     </div>
