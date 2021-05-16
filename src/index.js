@@ -4,7 +4,7 @@ import "./styles/index.css";
 import App from "./components/App";
 
 import firebase from "firebase/app";
-import { firebaseConfig } from "./.env.local/firebaseConfig";
+import { firebaseConfig } from "./firebaseConfig";
 
 firebase.initializeApp(firebaseConfig);
 
